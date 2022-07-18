@@ -201,9 +201,17 @@ func AudioSpecificConfigToADTS(asc AudioSpecificConfig, rawDataLength int) (adts
 	return
 }
 func ParseRTPAAC(payload []byte) (result [][]byte) {
+	if len(payload) < 2 {
+		utils.Print("AAC data error(1). Ignored. ", len(payload))
+		return
+	}
 	auHeaderLen := (int16(payload[0]) << 8) + int16(payload[1])
 	auHeaderLen = auHeaderLen >> 3
 	auHeaderCount := int(auHeaderLen / 2)
+	if int(auHeaderLen) > len(payload)+2 {
+		utils.Print("AAC data error(2). Ignored. ", len(payload), auHeaderLen, auHeaderCount)
+		return
+	}
 	var auLenArray []int
 	for iIndex := 0; iIndex < int(auHeaderCount); iIndex++ {
 		auHeaderInfo := (int16(payload[2+2*iIndex]) << 8) + int16(payload[2+2*iIndex+1])
@@ -213,6 +221,10 @@ func ParseRTPAAC(payload []byte) (result [][]byte) {
 	startOffset := 2 + 2*auHeaderCount
 	for _, auLen := range auLenArray {
 		endOffset := startOffset + auLen
+		if endOffset > len(payload) {
+			utils.Print("AAC data error(3). Ignored. ", len(payload), startOffset, endOffset)
+			return
+		}
 		result = append(result, payload[startOffset:endOffset])
 		startOffset = startOffset + auLen
 	}
