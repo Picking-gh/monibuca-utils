@@ -3,9 +3,10 @@ package mpegts
 import (
 	"errors"
 	"fmt"
-	"github.com/Picking-gh/monibuca-utils/v3"
 	"io"
 	"io/ioutil"
+
+	utils "github.com/Picking-gh/monibuca-utils/v3"
 )
 
 //

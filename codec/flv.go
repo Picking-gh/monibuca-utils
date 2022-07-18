@@ -3,7 +3,7 @@ package codec
 import (
 	"io"
 
-	"github.com/Picking-gh/monibuca-utils/v3"
+	utils "github.com/Picking-gh/monibuca-utils/v3"
 )
 
 const (

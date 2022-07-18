@@ -1,7 +1,7 @@
 package codec
 
 import (
-	"github.com/Picking-gh/monibuca-utils/v3"
+	utils "github.com/Picking-gh/monibuca-utils/v3"
 )
 
 type MP4 interface {
