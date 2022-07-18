@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Monibuca/utils/v3"
-	"github.com/Monibuca/utils/v3/codec"
+	"github.com/Picking-gh/monibuca-utils/v3"
+	"github.com/Picking-gh/monibuca-utils/v3/codec"
 	"io"
 	"io/ioutil"
 )
