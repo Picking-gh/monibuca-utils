@@ -45,7 +45,7 @@ type GASpecificConfig struct {
 
 // ISO/IEC 13838-7 20(25)/page
 //
-// Advanced Audio Coding
+// # Advanced Audio Coding
 //
 // AudioDataTransportStream
 type ADTS struct {
@@ -84,7 +84,6 @@ type ADTSFixedHeader struct {
 // 1: Low Complexity profile(LC)
 // 2: Scalable Sampling Rate profile(SSR)
 // 3: Reserved
-//
 var SamplingFrequencies = [...]int{96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350, 0, 0, 0}
 
 // Sampling Frequencies[]:
@@ -204,14 +203,14 @@ func AudioSpecificConfigToADTS(asc AudioSpecificConfig, rawDataLength int) (adts
 }
 func ParseRTPAAC(payload []byte) (result [][]byte) {
 	if len(payload) < 2 {
-		utils.Print("AAC data error(1). Ignored. ", len(payload))
+		utils.Print("[utils] AAC data error(1). Ignored. ", len(payload))
 		return
 	}
 	auHeaderLen := (int16(payload[0]) << 8) + int16(payload[1])
 	auHeaderLen = auHeaderLen >> 3
 	auHeaderCount := int(auHeaderLen / 2)
 	if int(auHeaderLen) > len(payload)+2 {
-		utils.Print("AAC data error(2). Ignored. ", len(payload), auHeaderLen, auHeaderCount)
+		utils.Print("[utils] AAC data error(2). Ignored. ", len(payload), auHeaderLen, auHeaderCount)
 		return
 	}
 	var auLenArray []int
@@ -224,7 +223,7 @@ func ParseRTPAAC(payload []byte) (result [][]byte) {
 	for _, auLen := range auLenArray {
 		endOffset := startOffset + auLen
 		if endOffset > len(payload) {
-			utils.Print("AAC data error(3). Ignored. ", len(payload), startOffset, endOffset)
+			utils.Print("[utils] AAC data error(3). Ignored. ", len(payload), startOffset, endOffset)
 			return
 		}
 		result = append(result, payload[startOffset:endOffset])

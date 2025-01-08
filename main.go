@@ -26,7 +26,7 @@ func ListenAddrs(addr, addTLS, cert, key string, handler http.Handler) {
 		g.Go(func() error { return http.ListenAndServe(addr, handler) })
 	}
 	if err := g.Wait(); err != nil {
-		log.Fatal(err)
+		log.Fatal("[utils] ", err)
 	}
 }
 
@@ -48,7 +48,7 @@ func ListenTCP(addr string, process func(net.Conn)) error {
 				if max := 1 * time.Second; tempDelay > max {
 					tempDelay = max
 				}
-				Printf("%s: Accept error: %v; retrying in %v", addr, err, tempDelay)
+				Printf("[utils] %s: Accept error: %v; retrying in %v", addr, err, tempDelay)
 				time.Sleep(tempDelay)
 				continue
 			}
@@ -63,17 +63,17 @@ func ListenTCP(addr string, process func(net.Conn)) error {
 func ListenUDP(address string, networkBuffer int) (*net.UDPConn, error) {
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
-		log.Fatalf("udp server ResolveUDPAddr :%s error, %v", address, err)
+		log.Fatalf("[utils] udp server ResolveUDPAddr :%s error, %v", address, err)
 	}
 	conn, err := net.ListenUDP("udp", addr)
 	if err != nil {
-		log.Fatalf("udp server ListenUDP :%s error, %v", address, err)
+		log.Fatalf("[utils] udp server ListenUDP :%s error, %v", address, err)
 	}
 	if err = conn.SetReadBuffer(networkBuffer); err != nil {
-		Printf("udp server video conn set read buffer error, %v", err)
+		Printf("[utils] udp server video conn set read buffer error, %v", err)
 	}
 	if err = conn.SetWriteBuffer(networkBuffer); err != nil {
-		Printf("udp server video conn set write buffer error, %v", err)
+		Printf("[utils] udp server video conn set write buffer error, %v", err)
 	}
 	return conn, err
 }
